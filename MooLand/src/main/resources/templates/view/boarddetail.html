@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>공지사항</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/board2.css}">
+</head>
+<body>
+       <div layout:fragment="content">
+<div class="backgroundboard">
+   <div class="moo-container5" style="margin-top:30px;">
+        <div class="card" style="height: auto ; min-height: 600px;">
+            <div class="card-body">
+                <h5 class="card-title text-center" th:text="${board.title}" style="font-size:28px; font-weight: bold;"></h5>
+                <h6 class="card-subtitle mb-2 text-muted text-right" th:text="${board.name}"></h6>
+                <h6 class="card-subtitle mb-2 text-muted text-right" th:text="${board.cdate}"></h6>
+                <div class="card-text" th:utext="${board.content}" style="font-size: 20px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+          <div class="text-right" style="margin-top:20px;">
+<a  th:if="${session.admin == 'admin'}" th:href="@{/detail/update(bno=${board.bno})}" class="btn btn-secondary" style="background: green;">수정</a>
+<a  th:if="${session.admin == 'admin'}" th:href="@{/detail/delete(bno=${board.bno})}" class="btn btn-danger">삭제</a>
+
+            <a href="/board" class="btn btn-secondary">목록</a>
+        </div>
+    </div>
+    </div>
+    </div>
+</body>
+</html>

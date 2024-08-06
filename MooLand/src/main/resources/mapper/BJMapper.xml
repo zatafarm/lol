@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mooland.bj.BjMapper">
+    <insert id="insertBJ" parameterType="BJDTO">
+        INSERT INTO bj 
+        (`BJName`, `BJID`, `LOLNickName`, `LOLpuuid`, `LOLTier`, `LOLRank`, `LOLBTier`, `LOLMPosition`, `LOLSPosition`) 
+        VALUES 
+        (#{BJName}, #{BJID}, #{LOLNickName}, #{LOLpuuid}, #{LOLTier}, #{LOLrank}, #{LOLBTier}, #{LOLMPosition}, #{LOLSPosition});
+    </insert>
+    <select id="bjint" resultType="int">
+        SELECT id from bj order by  id desc limit 1;
+    </select>
+     <select id="getsearch" resultType="java.lang.String">
+        SELECT bjname from bj  WHERE bjname LIKE CONCAT('%', #{search}, '%')
+    </select>
+         <select id="getbjdto" resultType="BJDTO">
+        SELECT * from bj where bjname = #{search}
+    </select>
+     <select id="getbjdtoallimg" resultType="BJDTO">
+        SELECT BJID from bj
+    </select>
+       <select id="getbjdtoid" resultType="BJDTO">
+        SELECT * from bj where bjid = #{search}
+    </select>
+           <select id="getbjdtolol" resultType="BJDTO">
+        SELECT * from bj where LOLnickname = #{search}
+    </select>
+        <update id="Updatelolnickname">
+        UPDATE bj
+        SET LOLNickname = #{LOLNickName}
+        WHERE LOLpuuid = #{LOLpuuid}
+    </update>
+    <update id="UpdateBJtier">
+        UPDATE bj
+        SET LOLNickname = #{LOLNickName}, 
+        WHERE BJName = #{BJName}
+    </update>
+        <update id="UpdateBJtierandposition">
+        UPDATE bj
+        SET 
+            LOLBTier = #{LOLBTier},
+            LOLMPosition = #{LOLMPosition},
+            LOLSPosition = #{LOLSPosition}
+        WHERE LOLNickName = #{LOLNickName}
+    </update> 
+        <select id="LOLNickName" resultType="String">
+    	SELECT LOLNickName
+	FROM bj
+	where id = #{int}
+LIMIT 1;
+    </select>
+            <select id="LOLpuuid" resultType="String">
+    	SELECT LOLpuuid
+	FROM bj
+	where id = #{int}
+LIMIT 1 ;
+    </select>
+    <select id="BjName" resultType="String">
+    SELECT bjname
+FROM bj
+where id = #{int}
+LIMIT 1;
+
+    </select>
+        <update id="UpdateBJpuuid">
+        UPDATE bj
+        SET LOLpuuid = #{LOLpuuid}
+        WHERE LOLNickname = #{LOLNickName}
+    </update>
+    
+            <update id="UpdateNtier">
+        UPDATE bj
+        SET LOLTier = #{LOLTier},
+        LOLRank = #{LOLrank}
+        WHERE LOLpuuid = #{LOLpuuid}
+    </update>
+    <select id="getbjlistint" resultType="int" parameterType="SearchDto">
+    select count(*)
+    from bj
+    </select>
+        <select id="bjlist" resultType="BJDTO" parameterType="SearchDto">
+    select *
+    from bj
+        LIMIT #{page.pagination.limitStart}, #{page.recordSize};
+    </select>
+
+       
+     <select id="getdata" resultType="searchbjdto" parameterType="SearchDto">
+SELECT 
+  DISTINCT g.gameid, 
+    s.gamedate, 
+    s.ltn, 
+    s.rtn, 
+    s.lscore, 
+    s.rscore, 
+    s.win, 
+    gs_ltn.p1 AS lp1, 
+    gs_ltn.p2 AS lp2, 
+    gs_ltn.p3 AS lp3, 
+    gs_ltn.p4 AS lp4, 
+    gs_ltn.p5 AS lp5,
+    gs_rtn.p1 AS rp1, 
+    gs_rtn.p2 AS rp2, 
+    gs_rtn.p3 AS rp3, 
+    gs_rtn.p4 AS rp4, 
+    gs_rtn.p5 AS rp5,
+    bj_ltn_p1.bjid AS lp1bjid, 
+    bj_ltn_p2.bjid AS lp2bjid, 
+    bj_ltn_p3.bjid AS lp3bjid, 
+    bj_ltn_p4.bjid AS lp4bjid, 
+    bj_ltn_p5.bjid AS lp5bjid, 
+    bj_rtn_p1.bjid AS rp1bjid, 
+    bj_rtn_p2.bjid AS rp2bjid, 
+    bj_rtn_p3.bjid AS rp3bjid, 
+    bj_rtn_p4.bjid AS rp4bjid, 
+    bj_rtn_p5.bjid AS rp5bjid
+FROM 
+    gamewl g 
+    LEFT JOIN game s ON g.gameid = s.gameid
+    LEFT JOIN gamesave gs_ltn ON gs_ltn.gameid = s.gameid AND gs_ltn.team = s.ltn
+    LEFT JOIN gamesave gs_rtn ON gs_rtn.gameid = s.gameid AND gs_rtn.team = s.rtn
+    LEFT JOIN bj bj_ltn_p1 ON bj_ltn_p1.bjname = gs_ltn.p1
+    LEFT JOIN bj bj_ltn_p2 ON bj_ltn_p2.bjname = gs_ltn.p2
+    LEFT JOIN bj bj_ltn_p3 ON bj_ltn_p3.bjname = gs_ltn.p3
+    LEFT JOIN bj bj_ltn_p4 ON bj_ltn_p4.bjname = gs_ltn.p4
+    LEFT JOIN bj bj_ltn_p5 ON bj_ltn_p5.bjname = gs_ltn.p5
+    LEFT JOIN bj bj_rtn_p1 ON bj_rtn_p1.bjname = gs_rtn.p1
+    LEFT JOIN bj bj_rtn_p2 ON bj_rtn_p2.bjname = gs_rtn.p2
+    LEFT JOIN bj bj_rtn_p3 ON bj_rtn_p3.bjname = gs_rtn.p3
+    LEFT JOIN bj bj_rtn_p4 ON bj_rtn_p4.bjname = gs_rtn.p4
+    LEFT JOIN bj bj_rtn_p5 ON bj_rtn_p5.bjname = gs_rtn.p5
+WHERE 
+    g.bjname = #{search}
+    AND fin = 1
+ORDER BY 
+    s.gamedate DESC
+            LIMIT #{page.pagination.limitStart}, #{page.recordSize};
+
+    </select>
+         <select id="getdataint" resultType="int"  parameterType="SearchDto">
+SELECT 
+    COUNT(*) AS total_count
+FROM (
+    SELECT 
+      DISTINCT g.gameid
+    FROM 
+        gamewl g 
+        LEFT JOIN game s ON g.gameid = s.gameid
+        LEFT JOIN gamesave gs_ltn ON gs_ltn.gameid = s.gameid AND gs_ltn.team = s.ltn
+        LEFT JOIN gamesave gs_rtn ON gs_rtn.gameid = s.gameid AND gs_rtn.team = s.rtn
+        LEFT JOIN bj bj_ltn_p1 ON bj_ltn_p1.bjname = gs_ltn.p1
+        LEFT JOIN bj bj_ltn_p2 ON bj_ltn_p2.bjname = gs_ltn.p2
+        LEFT JOIN bj bj_ltn_p3 ON bj_ltn_p3.bjname = gs_ltn.p3
+        LEFT JOIN bj bj_ltn_p4 ON bj_ltn_p4.bjname = gs_ltn.p4
+        LEFT JOIN bj bj_ltn_p5 ON bj_ltn_p5.bjname = gs_ltn.p5
+        LEFT JOIN bj bj_rtn_p1 ON bj_rtn_p1.bjname = gs_rtn.p1
+        LEFT JOIN bj bj_rtn_p2 ON bj_rtn_p2.bjname = gs_rtn.p2
+        LEFT JOIN bj bj_rtn_p3 ON bj_rtn_p3.bjname = gs_rtn.p3
+        LEFT JOIN bj bj_rtn_p4 ON bj_rtn_p4.bjname = gs_rtn.p4
+        LEFT JOIN bj bj_rtn_p5 ON bj_rtn_p5.bjname = gs_rtn.p5
+    WHERE 
+        g.bjname = #{search}
+        AND s.fin = 1
+) AS subquery;
+
+    </select>
+</mapper>

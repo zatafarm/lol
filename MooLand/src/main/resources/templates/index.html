@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+      <head>
+              <link rel="stylesheet" th:href="@{bootstrap/css/search.css}">
+                          <script src="/js/search.js?ver=222"defer></script>
+       <title>Moo Land</title>
+
+
+      </head>
+      <body>
+<div layout:fragment="content">
+
+    <div class="center-container-moo">
+        <div class="search-container-moo">
+            <input type="text" id="search-input-moo" autocomplete="off" placeholder="BJ 이름 검색..." />
+            <button id="search-button-moo">검색</button>
+               <div id="suggestions-moo"  class="suggestions-container-moo"></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

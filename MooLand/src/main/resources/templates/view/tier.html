@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>티어표</title>
+        <link rel="stylesheet" th:href="@{bootstrap/css/tier.css}">
+            <script src="/js/tier.js?ver=222"defer></script>
+</head>
+<body>
+  <div layout:fragment="content" >
+ 
+   <div class="moo-navbar-container">
+    <div class="moo-navbar">
+        <button data-position="all" onclick="location.href='/tier?position=all&role=all'">전체</button>
+        <div class="dropdown">
+            <button data-position="top">탑</button>
+            <div class="dropdown-content">
+                <a href="/tier?position=top&role=main">주포지션</a>
+                <a href="/tier?position=top&role=sub">부포지션</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button data-position="jungle">정글</button>
+            <div class="dropdown-content">
+                <a href="/tier?position=jungle&role=main">주포지션</a>
+                <a href="/tier?position=jungle&role=sub">부포지션</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button data-position="mid">미드</button>
+            <div class="dropdown-content">
+                <a href="/tier?position=mid&role=main">주포지션</a>
+                <a href="/tier?position=mid&role=sub">부포지션</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button data-position="adc">원딜</button>
+            <div class="dropdown-content">
+                <a href="/tier?position=adc&role=main">주포지션</a>
+                <a href="/tier?position=adc&role=sub">부포지션</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button data-position="support">서폿</button>
+            <div class="dropdown-content">
+                <a href="/tier?position=support&role=main">주포지션</a>
+                <a href="/tier?position=support&role=sub">부포지션</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+       <div th:if="${position}"  class="backcontainer">
+  <div class="container moo" style="display: flex; justify-content: center; align-items: center; text-align: center;">
+  <span style="color: white;">*현 시즌이 배치고사를 진행하지 않은 경우에는 전 시즌의 티어로 표가 배치됩니다<BR>*주 포지션과 부 포지션은 전적 사이트의 솔로 랭크 게임 최근 전적 20경기 기준으로 설정됩니다.</span>
+</div>
+
+        <div class="container moo">
+                       <div class="image-row">
+        <img src="/bootstrap/img/CHALLENGER.png" alt="티어표" class="tier-image mootier">                       
+
+    </div>
+<ul class="user-list mootier">
+<li th:each="tier : ${tierList}"
+    th:if="${tier.LOLTier == 'CHALLENGER' or (tier.LOLTier == '배치' and tier.LOLBTier == 'CHALLENGER')} ">
+        <div class="user-container">
+            <img th:src="${tier.imgUrl}" alt="티어표" class="user-image mootier" th:if="${tier.imgUrl != null}">
+                 <span th:text="${tier.BJName}" class="username"></span> <!-- 닉네임 추가 -->           
+          <div class="popup" th:data-bjid="${tier.BJID}">
+                <span th:text="'이름: ' + ${tier.BJName}"></span><br>
+                  <span>닉네임: </span> <!-- '닉네임:' 텍스트 추가 -->
+     	     <a  target='_blank' th:href="'https://fow.kr/find/' + ${tier.LOLNickName1} + '-' + ${tier.LOLNickName2}" th:text="${tier.LOLNickName}"></a><br>
+      <span th:text="'현재 시즌 티어: ' + ${tier.LOLTier}"></span><br>
+                    <span th:text="'전 시즌 티어: ' + ${tier.LOLBTier}"></span><br>
+                    <span th:text="'주 포지션: ' + ${tier.LOLMPosition}"></span><br>
+                    <span th:text="'부 포지션: ' + ${tier.LOLSPosition}"></span>
+            </div>
+        </div>
+    </li>
+</ul>
+        </div>
+        
+        <div class="container moo">
+                       <div class="image-row">                   
+        <img src="/bootstrap/img/GRANDMASTER.png" alt="티어표" class="tier-image mootier">
+    </div>
+<ul class="user-list mootier">
+<li th:each="tier : ${tierList}"
+    th:if="${tier.LOLTier == 'GRANDMASTER' or (tier.LOLTier == '배치' and tier.LOLBTier == 'GRANDMASTER')}">
+        <div class="user-container">
+            <img th:src="@{${tier.imgUrl}}" alt="티어표" class="user-image mootier" th:if="${tier.imgUrl != null}">
+                 <span th:text="${tier.BJName}" class="username"></span> <!-- 닉네임 추가 -->           
+          <div class="popup" th:data-bjid="${tier.BJID}">
+                <span th:text="'이름: ' + ${tier.BJName}"></span><br>
+                  <span>닉네임: </span> <!-- '닉네임:' 텍스트 추가 -->
+     	     <a  target='_blank' th:href="'https://fow.kr/find/' + ${tier.LOLNickName1} + '-' + ${tier.LOLNickName2}" th:text="${tier.LOLNickName}"></a><br>
+      <span th:text="'현재 시즌 티어: ' + ${tier.LOLTier}"></span><br>
+                    <span th:text="'전 시즌 티어: ' + ${tier.LOLBTier}"></span><br>
+                    <span th:text="'주 포지션: ' + ${tier.LOLMPosition}"></span><br>
+                    <span th:text="'부 포지션: ' + ${tier.LOLSPosition}"></span>
+            </div>
+        </div>
+    </li>
+</ul>
+        </div>
+        
+        <div class="container moo">
+                       <div class="image-row">
+        <img src="/bootstrap/img/MASTER.png" alt="티어표" class="tier-image mootier">
+
+    </div>
+<ul class="user-list mootier">
+<li th:each="tier : ${tierList}"
+    th:if="${tier.LOLTier == 'MASTER' or (tier.LOLTier == '배치' and tier.LOLBTier == 'MASTER') 
+            }">
+        <div class="user-container">
+            <img th:src="${tier.imgUrl}" alt="티어표" class="user-image mootier" th:if="${tier.imgUrl != null}">
+                 <span th:text="${tier.BJName}" class="username"></span> <!-- 닉네임 추가 -->           
+          <div class="popup" th:data-bjid="${tier.BJID}">
+                <span th:text="'이름: ' + ${tier.BJName}"></span><br>
+                  <span>닉네임: </span> <!-- '닉네임:' 텍스트 추가 -->
+     	     <a  target='_blank' th:href="'https://fow.kr/find/' + ${tier.LOLNickName1} + '-' + ${tier.LOLNickName2}" th:text="${tier.LOLNickName}"></a><br>
+      <span th:text="'현재 시즌 티어: ' + ${tier.LOLTier}"></span><br>
+                    <span th:text="'전 시즌 티어: ' + ${tier.LOLBTier}"></span><br>
+                    <span th:text="'주 포지션: ' + ${tier.LOLMPosition}"></span><br>
+                    <span th:text="'부 포지션: ' + ${tier.LOLSPosition}"></span>
+            </div>
+        </div>
+    </li>
+</ul>
+        </div>
+<div class="container moo">
+    <img src="/bootstrap/img/DIAMOND.png" alt="티어표" class="tier-image mootier">
+    <ul class="user-list mootier">
+        <li th:each="tier : ${tierList}" th:if="${tier.LOLTier == 'DIAMOND' || (tier.LOLTier == '배치' && tier.LOLBTier == 'DIAMOND')}">
+            <div class="user-container">
+                <img th:src="${tier.imgUrl}" alt="티어표" class="user-image mootier" th:if="${tier.imgUrl != null}">
+                <span th:text="${tier.BJName}" class="username"></span> <!-- 닉네임 추가 -->
+                <div class="popup" id="popup" th:data-bjid="${tier.BJID}">
+                    <span th:text="'이름: ' + ${tier.BJName}"></span><br>
+                    <span>닉네임: </span> <!-- '닉네임:' 텍스트 추가 -->
+                    <a target='_blank' th:href="'https://fow.kr/find/' + ${tier.LOLNickName1} + '-' + ${tier.LOLNickName2}" th:text="${tier.LOLNickName}"></a><br>
+        <span th:text="'현재 시즌 티어: ' + ${tier.LOLTier}+' '+ ${tier.LOLRank}"></span><br>
+                    <span th:text="'전 시즌 티어: ' + ${tier.LOLBTier}"></span><br>
+                    <span th:text="'주 포지션: ' + ${tier.LOLMPosition}"></span><br>
+                    <span th:text="'부 포지션: ' + ${tier.LOLSPosition}"></span>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div class="container moo">
+    <img src="/bootstrap/img/EMERALD.png" alt="티어표" class="tier-image mootier">
+    <ul class="user-list mootier">
+        <li th:each="tier : ${tierList}" th:if="${tier.LOLTier == 'EMERALD' || (tier.LOLTier == '배치' && tier.LOLBTier == 'EMERALD')}">
+            <div class="user-container">
+                <img th:src="${tier.imgUrl}" alt="티어표" class="user-image mootier" th:if="${tier.imgUrl != null}">
+                <span th:text="${tier.BJName}" class="username"></span> <!-- 닉네임 추가 -->
+                    <div class="popup" id ="popup" th:data-bjid="${tier.BJID}">
+                    <span th:text="'이름: ' + ${tier.BJName}"></span><br>
+                    <span>닉네임: </span> <!-- '닉네임:' 텍스트 추가 -->
+                    <a  target='_blank' th:href="'https://fow.kr/find/' + ${tier.LOLNickName1} + '-' + ${tier.LOLNickName2}" th:text="${tier.LOLNickName}"></a><br>
+                    <span th:text="'현재 시즌 티어: ' + ${tier.LOLTier}+' '+ ${tier.LOLRank}"></span><br>
+                    <span th:text="'전 시즌 티어: ' + ${tier.LOLBTier}"></span><br>
+                    <span th:text="'주 포지션: ' + ${tier.LOLMPosition}"></span><br>
+                    <span th:text="'부 포지션: ' + ${tier.LOLSPosition}"></span>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+                <div class="container moo">
+            <img src="/bootstrap/img/PLATINUM.png" alt="티어표" class="tier-image mootier">
+
+                     <ul class="user-list mootier">
+    <li th:each="tier : ${tierList}" th:if="${tier.LOLTier == 'PLATINUM' || (tier.LOLTier == '배치' && tier.LOLBTier == 'PLATINUM')}">
+        <div class="user-container">
+            <img th:src="${tier.imgUrl}" alt="티어표" class="user-image mootier" th:if="${tier.imgUrl != null}">
+              <span th:text="${tier.BJName}" class="username"></span> <!-- 닉네임 추가 -->
+                <div class="popup" id ="popup" th:data-bjid="${tier.BJID}">
+                <span th:text="'이름: ' + ${tier.BJName}"></span><br>
+                  <span>닉네임: </span> <!-- '닉네임:' 텍스트 추가 -->
+     	     <a  target='_blank' th:href="'https://fow.kr/find/' + ${tier.LOLNickName1} + '-' + ${tier.LOLNickName2}" th:text="${tier.LOLNickName}"></a><br>
+                <span th:text="'현재 시즌 티어: ' + ${tier.LOLTier}+' '+ ${tier.LOLRank}"></span><br>
+                <span th:text="'전 시즌 티어: ' + ${tier.LOLBTier}"></span><br>
+                <span th:text="'주 포지션: ' + ${tier.LOLMPosition}"></span><br>
+                <span th:text="'부 포지션: ' + ${tier.LOLSPosition}"></span>
+            </div>
+        </div>
+    </li>
+</ul>
+        </div>
+                <div class="container moo">
+            <img src="/bootstrap/img/GOLD.png" alt="티어표" class="tier-image mootier">
+                       <ul class="user-list mootier">
+    <li th:each="tier : ${tierList}" th:if="${tier.LOLTier == 'GOLD' || (tier.LOLTier == '배치' && tier.LOLBTier == 'GOLD')}">
+        <div class="user-container">
+            <img th:src="${tier.imgUrl}" alt="티어표" class="user-image mootier" th:if="${tier.imgUrl != null}">
+              <span th:text="${tier.BJName}" class="username"></span> <!-- 닉네임 추가 -->
+                           <div class="popup" id ="popup" th:data-bjid="${tier.BJID}">
+                <span th:text="'이름: ' + ${tier.BJName}"></span><br>
+                  <span>닉네임: </span> <!-- '닉네임:' 텍스트 추가 -->
+     	     <a   target='_blank' th:href="'https://fow.kr/find/' + ${tier.LOLNickName1} + '-' + ${tier.LOLNickName2}" th:text="${tier.LOLNickName}"></a><br>
+       <span th:text="'현재 시즌 티어: ' + ${tier.LOLTier}+' '+ ${tier.LOLRank}"></span><br>
+                    <span th:text="'전 시즌 티어: ' + ${tier.LOLBTier}"></span><br>
+                    <span th:text="'주 포지션: ' + ${tier.LOLMPosition}"></span><br>
+                    <span th:text="'부 포지션: ' + ${tier.LOLSPosition}"></span>
+            </div>
+        </div>
+    </li>
+</ul>
+        </div>
+                <div class="container moo">
+            <img src="/bootstrap/img/SILVER.png" alt="티어표" class="tier-image mootier">
+                   <ul class="user-list mootier">
+    <li th:each="tier : ${tierList}" th:if="${tier.LOLTier == 'SILVER' || (tier.LOLTier == '배치' && tier.LOLBTier == 'SILVER')}">
+        <div class="user-container">
+            <img th:src="${tier.imgUrl}" alt="티어표" class="user-image mootier" th:if="${tier.imgUrl != null}">
+              <span th:text="${tier.BJName}" class="username"></span> <!-- 닉네임 추가 -->
+                <div class="popup" id ="popup" th:data-bjid="${tier.BJID}">
+                <span th:text="'이름: ' + ${tier.BJName}"></span><br>
+                  <span>닉네임: </span> <!-- '닉네임:' 텍스트 추가 -->
+     	     <a  target='_blank' th:href="'https://fow.kr/find/' + ${tier.LOLNickName1} + '-' + ${tier.LOLNickName2}" th:text="${tier.LOLNickName}"></a><br>
+       <span th:text="'현재 시즌 티어: ' + ${tier.LOLTier}+' '+ ${tier.LOLRank}"></span><br>
+                    <span th:text="'전 시즌 티어: ' + ${tier.LOLBTier}"></span><br>
+                    <span th:text="'주 포지션: ' + ${tier.LOLMPosition}"></span><br>
+                    <span th:text="'부 포지션: ' + ${tier.LOLSPosition}"></span>
+            </div>
+        </div>
+    </li>
+</ul>
+        </div>
+                <div class="container moo">
+            <img src="/bootstrap/img/BRONZE.png" alt="티어표" class="tier-image mootier">
+                    <ul class="user-list mootier">
+    <li th:each="tier : ${tierList}" th:if="${tier.LOLTier == 'BRONZE' || (tier.LOLTier == '배치' && tier.LOLBTier == 'BRONZE')}">
+        <div class="user-container">
+            <img th:src="${tier.imgUrl}" alt="티어표" class="user-image mootier" th:if="${tier.imgUrl != null}">
+              <span th:text="${tier.BJName}" class="username"></span> <!-- 닉네임 추가 -->
+                 <div class="popup" id ="popup" th:data-bjid="${tier.BJID}">
+                <span th:text="'이름: ' + ${tier.BJName}"></span><br>
+                  <span>닉네임: </span> <!-- '닉네임:' 텍스트 추가 -->
+     	     <a   target='_blank' th:href="'https://fow.kr/find/' + ${tier.LOLNickName1} + '-' + ${tier.LOLNickName2}" th:text="${tier.LOLNickName}"></a><br>
+       <span th:text="'현재 시즌 티어: ' + ${tier.LOLTier}+' '+ ${tier.LOLRank}"></span><br>
+                    <span th:text="'전 시즌 티어: ' + ${tier.LOLBTier}"></span><br>
+                    <span th:text="'주 포지션: ' + ${tier.LOLMPosition}"></span><br>
+                    <span th:text="'부 포지션: ' + ${tier.LOLSPosition}"></span>
+            </div>
+        </div>
+    </li>
+</ul>
+        </div>
+                <div class="container moo" style="margin-bottom:100px;">
+            <img src="/bootstrap/img/IRON.png" alt="티어표" class="tier-image mootier">
+                      <ul class="user-list mootier">
+    <li th:each="tier : ${tierList}" th:if="${tier.LOLTier == 'IRON' || (tier.LOLTier == '배치' && tier.LOLBTier == '')}">
+        <div class="user-container">
+            <img th:src="${tier.imgUrl}" alt="티어표" class="user-image mootier" th:if="${tier.imgUrl != null}">
+              <span th:text="${tier.BJName}" class="username"></span> <!-- 닉네임 추가 -->
+                <div class="popup" id ="popup" th:data-bjid="${tier.BJID}">
+                <span th:text="'이름: ' + ${tier.BJName}"></span><br>
+                  <span>닉네임: </span> <!-- '닉네임:' 텍스트 추가 -->
+     	     <a  target='_blank' th:href="'https://fow.kr/find/' + ${tier.LOLNickName1} + '-' + ${tier.LOLNickName2}" th:text="${tier.LOLNickName}"></a><br>
+       <span th:text="'현재 시즌 티어: ' + ${tier.LOLTier}+' '+ ${tier.LOLRank}"></span><br>
+                    <span th:text="'전 시즌 티어: ' + ${tier.LOLBTier}"></span><br>
+                    <span th:text="'주 포지션: ' + ${tier.LOLMPosition}"></span><br>
+                    <span th:text="'부 포지션: ' + ${tier.LOLSPosition}"></span>
+            </div>
+        </div>
+    </li>
+</ul>
+</div>
+           <div style="height: 50px;">
+</div>
+  </div>
+        </div>
+    
+</body>
+</html>

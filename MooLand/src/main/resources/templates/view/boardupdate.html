@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>공지사항</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/board2.css}">
+    <style>
+            .post-form {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            width: 1500px;
+            background: white;
+        }
+   
+        .submit-btn {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        </style>
+</head>
+<body>
+       <div layout:fragment="content">
+<div class="backgroundboard">
+    <form id="postForm" th:action="@{/detail/update?bno=} + ${board.bno}" method="POST" onsubmit="return submitPost()">
+        <div class="post-form">
+            <label>제목</label>
+            <div contenteditable="true" id="postTitle" th:utext="${board.title}" style="border: 1px solid #ccc;"></div>
+            <input type="hidden" name="title" id="hiddenTitle">
+
+            <label>내용</label>
+            <div contenteditable="true" id="postContent" th:utext="${board.content}"  style="border: 1px solid #ccc; height: 600px;"></div>
+            <input type="hidden" name="content" id="hiddenContent">
+
+            <button type="submit" class="submit-btn">수정</button>
+        </div>
+    </form>
+</div>
+<script>
+function submitPost() {
+    const title = document.getElementById('postTitle').innerText.trim();
+    let content = document.getElementById('postContent').innerHTML.trim(); // HTML 구조를 유지
+
+    // <div> 대신 <br>로 치환 (줄바꿈을 <br>로 바꿔줌)
+    content = content.replace(/<\/div>\s*<div>/g, '<br>'); // <div> 태그 사이의 내용을 <br>로 변환
+    content = content.replace(/<div>/g, ''); // 시작 <div> 태그 제거
+    content = content.replace(/<\/div>/g, ''); // 끝 </div> 태그 제거
+
+    // hidden input에 값 설정
+    document.getElementById('hiddenTitle').value = title;
+    document.getElementById('hiddenContent').value = content; // HTML 그대로 전송
+
+    return true; // 폼 제출 허용
+}
+</script>
+
+
+    </div>
+    </div>
+</body>
+</html>

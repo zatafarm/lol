@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/admin.css}">
+</head>
+<body>
+    <div layout:fragment="content">
+    <div  class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>회원 ID</th>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>가입일</th>
+                <th>등급</th>
+                <th>등급 변경</th>
+            </tr>
+        </thead>
+        <tbody>
+ <tbody>
+        <tr th:each="member : ${members}" id="row_${member.login_id}">
+            <td th:text="${member.login_id}"></td>
+            <td th:text="${member.name}"></td>
+            <td th:text="${member.email}"></td>
+            <td th:text="${member.cdate}"></td>
+            <td>
+                <select th:id="'role_' + ${member.login_id}" th:value="${member.role}">
+                    <option value="USER" th:selected="${member.role == 'USER'}">유저</option>
+                    <option value="BJ" th:selected="${member.role == 'BJ'}">BJ</option>
+                    <option value="ADMIN" th:selected="${member.role == 'ADMIN'}">관리자</option>
+                </select>
+            </td>
+            <td>
+                <button class="button" onclick="getRowData(this)">변경</button>
+            </td>
+        </tr>
+    </tbody>
+  
+        </tbody>
+    </table>
+    <script>
+    function getRowData(button) {
+        const row = button.closest('tr'); // 현재 버튼이 위치한 행(tr) 찾기
+        const cells = row.getElementsByTagName('td'); // 해당 행의 모든 셀(td) 가져오기
+        const loginId = cells[0].innerText; // 첫 번째 셀의 텍스트 가져오기
+        const selectedRole = $(row).find('select').val(); // 행 내 select 요소의 선택된 값 가져오기
+
+        $.ajax({
+            url: '/admin/changerole', // 요청할 URL
+            type: 'POST', // 요청 방식
+            data: {
+                loginId: loginId, // 전송할 데이터
+                role: selectedRole // 전송할 데이터
+            },
+            success: function(data) {
+            	
+                alert("변경 완료");
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                alert("변경 실패");
+            }
+        });
+    }
+</script>
+</div>
+    </div>
+</body>
+</html>

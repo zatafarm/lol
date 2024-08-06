@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mooland.User.UserMapper">
+    <select id="idcheck" resultType="string">
+        SELECT login_id FROM member where login_id = #{id};
+    </select>
+      <select id="emailcheck" resultType="string">
+        SELECT email FROM member where email = #{email};
+    </select>
+        <select id="nicknamecheck" resultType="string">
+        SELECT nickname FROM member where nickname = #{nickname};
+    </select>
+    <select id="deletebj">
+   DELETE FROM bj WHERE BJID = #{bjId}
+    </select>
+      <select id="getmad" resultType="UserDTO">
+        SELECT * FROM member;
+    </select>
+        <update id="updateRole">
+        UPDATE member
+        SET 
+            role = #{role}
+        WHERE login_id = #{loginId}
+    </update> 
+</mapper>

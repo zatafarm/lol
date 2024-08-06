@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+
+</head>
+<body>
+    <div th:fragment="topbarFragment" >
+        <!-- Topbar -->
+        
+<header class="header"  style="border-bottom: 1px solid rgba(0, 0, 0, 0.2);">
+
+  <div id="flash-message" style="display:none;" th:data-message="${messagetop}"></div>
+  <script>
+  (function() {
+      if (window.location.pathname === '/home' || window.location.pathname === '/entry') {
+          var style = document.createElement('style');
+          style.innerHTML = '#top-search-container-moo { visibility: hidden; }';
+          document.head.appendChild(style);
+      } else {
+
+      }
+  })();
+    </script>
+<div class="container-fluid">
+
+  <link rel="stylesheet" th:href="@{/bootstrap/css/topsearch.css}">
+    <div class="row" style="height: 120px;">
+        <div class="col-xl-3 col-lg-2">
+            <div class="header__logo">
+                <a href="/home"><img src="/bootstrap/img/logo.png" alt="" style="height: 70px"></a>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-7">
+            <nav class="header__menu" style="margin-top: 5px; ">
+            
+                <ul>
+                
+                    <li><a href="/board" style="font-weight: bold; font-size: 20px;">공지사항</a></li>
+                    <li><a href="/tier" style="font-weight: bold; font-size: 20px;">티어표</a></li>
+                        <li><a href="/entry" style="font-weight: bold; font-size: 20px;">엔트리</a></li>
+                               <li><a href="/bjregit" style="font-weight: bold; font-size: 20px;">BJ 등록</a></li>
+
+                                <li>
+    <div >
+  <div class="top-search-container-moo" id="top-search-container-moo">
+    <input type="text" id="top-search-input-moo" autocomplete="off" placeholder="BJ 이름 검색..." />
+    <button id="top-search-button-moo">검색</button>
+    <div id="top-suggestions-moo" class="top-suggestions-container-moo"></div>
+  </div>
+</div>
+
+
+</li>
+                    <!-- 추가적인 메뉴 항목 -->
+                </ul>
+            </nav>
+        </div>
+
+ <div class="col-lg-3">
+    <div class="moo__right">
+        <div class="moo__right__auth"  id="fixedLogin">
+            <div th:unless="${session.nickname}" id="loginDiv" style="margin-top: 10px;" class="fixed-login">
+                <form th:method="post" th:action="@{/loginProc}" th:object="${loginRequest}">
+                    <input type="text" class="auth-input" id="loginId" name="loginId" th:field="*{loginId}" placeholder="아이디"/>
+                    <input type="password" class="auth-input" id="password" name="password" th:field="*{password}" placeholder="비밀번호"/>
+                    <button class="auth-button" type="submit" id="loginButton">로그인</button>
+                    <button class="auth-button" type="button" onclick="location.href='/register'">회원가입</button>
+                      <div th:if="${msg}" class="error" th:text="${msg}"></div>
+                </form>
+            </div>
+
+            <div th:if="${session.nickname}" id="logoutDiv" class="fixed-login">
+                <div>
+                    <img th:src="@{/bootstrap/img/222.png}" alt="" height="40px" width="40px" style="margin-right: 10px;">
+                    <span th:text="${session.nickname}" style="font-weight: 550;"></span>
+                </div>
+                <div class="moo-dropdown">
+                    <a href="#" class="moo-dropbtn">내 정보 / 로그아웃</a>
+                    <div class="moo-dropdown-content">
+                        <a href="/mypage">내 정보</a>
+ 				 <a th:if="${session.admin == 'admin'}" href="/admin">관리자 페이지</a>
+                        <a href="/logout">로그아웃</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+<script>
+    let lastScrollTop = 0; // 마지막 스크롤 위치
+    const fixedLogin = document.getElementById('fixedLogin');
+
+    window.addEventListener('scroll', function() {
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (currentScroll > lastScrollTop) {
+            // 아래로 스크롤할 때
+            fixedLogin.style.display = 'none';
+        } else {
+            // 위로 스크롤할 때
+            if (currentScroll === 0) {
+                // 페이지 맨 위에 도달했을 때만 보이도록 설정
+                fixedLogin.style.display = 'block';
+            }
+        }
+
+        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // 스크롤 위치 업데이트
+    });
+</script>
+
+
+        <script src="/js/searchtop.js?ver=22"defer></script>
+
+</header>
+    </div>
+
+</body>
+</html>

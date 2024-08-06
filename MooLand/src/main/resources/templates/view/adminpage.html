@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{bootstrap/css/admin.css}">
+</head>
+<body>
+    <div layout:fragment="content">
+    <div class="table-container">
+  <div>
+        <button class="" onclick="location.href='/admin/bjid'">등급 관리</button>
+             <button class="" onclick="location.href='/admin/bjlist'">BJ 관리</button>
+             <button class="" onclick="location.href='/update/puuid'">Puuid 업데이트</button>
+             <button class="" onclick="location.href='/update/bjtier'">티어 업데이트</button>
+             <button class="" onclick="location.href='/update/nickname'">닉네임 업데이트</button>
+                          <button class="" onclick="location.href='/update/bjimg'">BJ 프로필 업데이트</button>
+        </div>
+</div>
+</div>
+</body>
+</html>

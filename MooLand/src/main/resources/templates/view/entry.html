@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>엔트리</title>
+    <link rel="stylesheet" th:href="@{bootstrap/css/entry.css}">
+                <script src="/js/entry.js?ver=32222"defer></script>
+                
+</head>
+<body>
+<div layout:fragment="content" >  
+<div class= "ebackcontainer"> 
+
+ <div class="scoreboard hidden" id="scoreboard">
+      <div class="team1"><span id="rtsn">RED TEAM</span></div>
+      <div class="score"><span id="rts">0</span><span> - </span><span id="bts">0</span></div>
+      <div class="team2"><span id="btsn">BLUE TEAM</span></div>
+    </div>
+    
+<div class="enbackground">
+
+       <div class="moocontainer">
+
+          <div class="mooteam" id="team1div" style="margin-right: -20px; margin-top: 146px;">
+ <button class="styled-button4 hidden"  id ="rbutton"  onclick="winlosesave('red')"  >레드팀 승리</button>
+        <div class="mooplayerd" id="t1p1div"></div>
+        <div class="mooplayerd" id="t1p2div"></div>
+        <div class="mooplayerd" id="t1p3div"></div>
+        <div class="mooplayerd" id="t1p4div"></div>
+        <div class="mooplayerd" id="t1p5div"></div>
+</div>
+        <div class="mooteam" id="team1" style="margin-top: -10px; margin-top: 77px; ">
+                    <input type="text" id = "red" name ="red" class="mooteam1" value="RED TEAM" style="color: red; margin-bottom: -10px; " readonly>
+                                     <input type="text" id = "t1" name ="t1"  placeholder="레드 팀 이름" class="mooteam1">
+            <div class="mooplayer" style="margin-top: -10px;">
+            <img  th:src="@{/bootstrap/img/defult.png}" alt="player" class="user-image">
+            <input type="text" id = "t1p1" name ="t1p1" class="player-input" ></div>
+                     <div class="mooplayer">
+            <img  th:src="@{/bootstrap/img/defult.png}" alt="player" class="user-image">
+            <input type="text" id = "t1p2" name ="t1p2" class="player-input"></div>
+                        <div class="mooplayer">
+            <img  th:src="@{/bootstrap/img/defult.png}" alt="player" class="user-image">
+            <input type="text" id = "t1p3" name ="t1p3" class="player-input" ></div>
+                        <div class="mooplayer">
+            <img  th:src="@{/bootstrap/img/defult.png}" alt="player" class="user-image">
+            <input type="text" id = "t1p4" name ="t1p4" class="player-input"></div>
+                        <div class="mooplayer">
+            <img  th:src="@{/bootstrap/img/defult.png}" alt="player" class="user-image">
+            <input type="text" id = "t1p5" name ="t1p5" class="player-input"></div>
+        </div>
+             <div class="mooteam"  style="margin-top:-15px;">
+         <div class="d-flex justify-content-center mb-3">
+          <button class="styled-button2" id="reset" onclick="reset()" style="width: 80px; margin-bottom: 0px; margin-right:33px; background-color:rgba(0, 0, 0, 0.5);"> 리셋 </button>
+		<button class="image-button" id ="change1" name = "change1" onclick="swapall(0)"  style=" margin-bottom:5px;"> <img th:src="@{/bootstrap/img/change2.png}" alt="버튼 이미지"></button>
+        </div>
+                <button class="styled-button2" id="startbutton"  onclick="start()" style="width: 85%; margin-bottom: 10px; margin-top: -10px;">경기 시작</button>
+        <select id="gameModeSelect">
+         <option value="null" style="font-size: 12px;">게임 모드 설정</option>
+            <option value="single">단판전</option>
+            <option value="three">3판 2선</option>
+            <option value="five">5판 3선</option>
+        </select>
+            <div class="mooplayer2" style="margin-right: 38px;">   
+  <img th:src="@{/bootstrap/img/TOP.png}" alt="player" class="postitionimage">
+			<button class="image-button" id ="change1" name = "change1" onclick="swapIds('t1p1', 't2p1')"> <img th:src="@{/bootstrap/img/change2.png}" alt="버튼 이미지"></button></div>
+                     <div class="mooplayer2">
+  <img th:src="@{/bootstrap/img/JUNGLE.png}" alt="player" class="postitionimage" style="margin-top:5px;">
+			<button class="image-button" id ="change2" name = "change2" onclick="swapIds('t1p2', 't2p2')"> <img th:src="@{/bootstrap/img/change2.png}" alt="버튼 이미지"></button></div>
+                        <div class="mooplayer2">
+  <img th:src="@{/bootstrap/img/MID.png}" alt="player" class="postitionimage" style="margin-top:5px;">
+			<button class="image-button" id ="change3" name = "change3" onclick="swapIds('t1p3', 't2p3')"> <img th:src="@{/bootstrap/img/change2.png}" alt="버튼 이미지"></button></div>
+                        <div class="mooplayer2">
+  <img th:src="@{/bootstrap/img/BOT.png}" alt="player" class="postitionimage" style="margin-top:5px;" >
+			<button class="image-button" id ="change4" name = "change4" onclick="swapIds('t1p4', 't2p4')"> <img th:src="@{/bootstrap/img/change2.png}" alt="버튼 이미지"></button></div>
+                        <div class="mooplayer2">
+  <img th:src="@{/bootstrap/img/SUPPORT.png}" alt="player" class="postitionimage" style="margin-top:10px;">
+			<button class="image-button" id ="change5" name = "change5" onclick="swapIds('t1p5', 't2p5')"> <img th:src="@{/bootstrap/img/change2.png}" alt="버튼 이미지"></button></div>
+        </div>
+   <div class="mooteam" id="team2" style="margin-top: 77px; margin-left:20px;">
+                         <input type="text"  id = "blue" name ="blue" class="mooteam1" value="BLUE TEAM" style="color: #419DD9;  margin-bottom: -10px;" readonly>
+  <input type="text" id="t2" name="t2"  placeholder="블루 팀 이름" class="mooteam1">
+  <div class="mooplayer"  style="margin-top: -10px;">
+    <img th:src="@{/bootstrap/img/defult.png}" alt="player" class="user-image">
+    <input type="text" id="t2p1" name="t2p1" class="player-input">
+  </div>
+  <div class="mooplayer">
+    <img th:src="@{/bootstrap/img/defult.png}" alt="player" class="user-image" >
+    <input type="text" id="t2p2" name="t2p2" class="player-input">
+  </div>
+  <div class="mooplayer">
+    <img  th:src="@{/bootstrap/img/defult.png}" alt="player" class="user-image">
+    <input type="text" id="t2p3" name="t2p3" class="player-input">
+  </div>
+  <div class="mooplayer">
+    <img  th:src="@{/bootstrap/img/defult.png}" alt="player" class="user-image">
+    <input type="text" id="t2p4" name="t2p4" class="player-input" >
+  </div>
+  <div class="mooplayer">
+    <img  th:src="@{/bootstrap/img/defult.png}" alt="player" class="user-image">
+    <input type="text" id="t2p5" name="t2p5" class="player-input">
+  </div>
+</div>
+
+   <div class="mooteam" id="team2div" style="margin-left: -20px;  margin-top: 146px;">
+    <button class="styled-button hidden" id = "bbutton" onclick="winlosesave('blue')"  >블루팀 승리</button>
+      <button class="styled-button4" style="background: red;" id ="dataload"  onclick="dataload()"  >이전 데이터 불러오기</button>
+  <div class="mooplayerd"  id="t2p1div">
+  </div>
+    <div class="mooplayerd"  id="t2p2div">
+  </div>
+    <div class="mooplayerd"  id="t2p3div">
+  </div>
+    <div class="mooplayerd"  id="t2p4div">
+  </div>
+    <div class="mooplayerd"  id="t2p5div">
+  </div>
+</div>
+    </div>
+    
+   </div>
+   
+   </div>
+   
+   </div>
+  </body>
+</html>

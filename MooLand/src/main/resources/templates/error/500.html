@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>오류 페이지</title>
+  
+    <script>
+        window.onload = function() {
+            const errorMessage = /*[[${Message}]]*/ '"페이지를 찾을 수 없습니다."'; // 기본 메시지
+            alert(errorMessage);
+            window.location.href = "/home"; // 홈으로 리다이렉트
+        };
+    </script>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,28 @@
+.backgroundboard{
+    background: url("/bootstrap/img/searchback.jpg");
+  background-position: center center;
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+      display: flex;
+    justify-content: center;
+    align-items: center;
+    height:auto;
+    min-height: 800px;
+}
+.card-text {
+	font-size: 16px;
+}
+     .moo-container5 {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom:30px;
+            width:1500px;
+            height:auto;
+            min-height: 800px;
+     }
+     
+ 

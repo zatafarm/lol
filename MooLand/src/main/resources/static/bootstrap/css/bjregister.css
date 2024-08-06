@@ -1,0 +1,72 @@
+/* 공통 스타일 */
+body {
+    margin: 0;
+       font-family: "Nanum Gothic", sans-serif;
+    padding: 0;
+    font-weight: bold;
+}
+
+/* 컨테이너 스타일 */
+.registerMooContainer {
+    width: 100%;
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+/* 제목 스타일 */
+.registerMooTitle {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* 폼 그룹 스타일 */
+.registerMooFormGroup {
+    margin-bottom: 15px;
+}
+
+/* 라벨 스타일 */
+.registerMooLabel {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+/* 입력 필드 스타일 */
+.registerMooInput {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* CAPTCHA 스타일 */
+.registerMooCaptcha {
+    display: flex;
+    align-items: center;
+}
+
+.registerMooCaptcha img {
+    margin-right: 10px;
+}
+
+/* 버튼 스타일 */
+.registerMooButton {
+    width: 100%;
+    padding: 10px;
+    background-color: gray;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.registerMooButton:hover {
+    background-color: #4cae4c;
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>BJ 등록</title>
+    <style>
+      .progress-bar {
+            width: 100%;
+            background-color: #f3f3f3;
+            position: relative;
+            height: 30px;
+        }
+        .progress-bar-fill {
+            width: 0;
+            height: 100%;
+            background-color: #4caf50;
+            transition: width 0.5s;
+        }
+        .progress-bar-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            line-height: 30px;
+            color: black;
+            font-weight: bold;
+        }
+.loader {
+	display:none;
+    border: 8px solid #f3f3f3; /* 배경색 */
+    border-top: 8px solid #3498db; /* 애니메이션 색상 */
+    border-radius: 50%; /* 동글동글하게 */
+    width: 25px; /* 너비 */
+    height: 25px; /* 높이 */
+    animation: spin 1s linear infinite; /* 애니메이션 설정 */
+    margin-left: 200px; /* 가운데 정렬 */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+    </style>
+    <link rel="stylesheet" th:href="@{bootstrap/css/bjregister.css}">
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="registerMooContainer">
+            <h2 class="registerMooTitle">BJ 등록</h2>
+            <form class="registerMooForm" id="regit">
+                <div class="registerMooFormGroup">
+                    <label for="id" class="registerMooLabel">BJ 방송국 이름 <span style="font-size: 12px; color: gray;">   *풀 이름으로 적여주셔야합니다 ex)와꾸대장봉준</span></label>
+                    <input type="text" id="bjname" name="bjname"  class="registerMooInput" required>
+                    <div id="usernameMessage" class="registerMooMessage"></div>
+                     <input type="hidden" id = "namec" name = "name" value="1">
+                </div>
+                  <div class="registerMooFormGroup">
+                    <label for="id" class="registerMooLabel">BJ 아이디</label>
+                    <input type="text" id="bjid" name="bjid"  class="registerMooInput" required>
+                    <div id="usernameMessage2" class="registerMooMessage"></div>
+                     <input type="hidden" id = "bjidc" name = "bjidc" value="1">
+                </div>
+                   <div class="registerMooFormGroup">
+                    <label for="id" class="registerMooLabel">롤 닉네임<span style="font-size: 12px; color: gray;">   *롤 닉네임을 정확히 입력해주세요 ex)홍길동#KR1</span></label>
+                    <input type="text" id="loln" name="loln"  class="registerMooInput" required>
+                    <div id="usernameMessage3" class="registerMooMessage"></div>
+                     <input type="hidden" id = "lolc" name = "lolc" value="1">
+                </div>
+                          <div class="progress-bar" style="margin-top:30px; margin-bottom: 30px;">
+    <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        <div class="progress-bar-text" id="progress-bar-text">0%</div>
+      <div class="loader" id="loader"></div>
+    </div>
+
+           
+    
+                <button type="submit" class="registerMooButton">등록하기</button>
+      
+                
+            </form>
+                         <script src="/js/register2.js?ver=22122212212" defer></script>
+        </div>
+        
+    </div>
+</body>
+</html>

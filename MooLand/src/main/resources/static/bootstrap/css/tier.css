@@ -1,0 +1,201 @@
+body {
+    margin: 0;
+    padding: 0;
+              
+            font-family: "Nanum Gothic", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.moo-navbar {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.moo-navbar-container {
+    display: flex;
+    justify-content: center; /* 중앙 정렬 */
+    width: 99.9%;
+    height: auto;
+}
+
+.moo-navbar button {
+    width: 100px;
+    padding: 10px;
+    background-color: gray;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+}
+
+.moo-navbar button:hover {
+    background-color: black;
+    color: white;
+}
+
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+li {
+    display: inline;
+    margin-right: 10px; /* 항목 간의 간격을 조정할 수 있습니다 */
+}
+
+.container.moo {
+    display: flex;
+    flex-direction: column; /* 요소들을 수직으로 배치 */
+    align-items: center; /* 이미지와 사용자 목록을 수직으로 중앙 정렬 */
+    border: 2px solid #cccccc; /* 회색 경계 */
+    border-radius: 10px; /* 둥근 모서리 */
+    padding: 20px; /* 내부 여백 */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    max-width: auto; /* 최대 너비 */
+    margin-bottom: 30px; /* 중앙 정렬 */
+    text-align: center; /* 가운데 정렬 */
+    background-color: rgba(0, 0, 0, 0.5); /* 배경색: 연한 검은색, 투명도 50% */
+}
+
+
+.image-row {
+    display: flex;
+    justify-content: center; /* 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    gap: 10px; /* 이미지 간격 설정 */
+}
+
+.tier-image.mootier {
+    width: 150px;
+    height: 150px;
+    display: block; /* 블록 요소로 변경 */
+    margin: 0; /* 여백 제거 */
+    margin-top : -25px;
+}
+
+
+.user-image.mootier {
+    width: 90px;
+    height: 74px;
+    border-radius: 50%; /* 이미지를 동그랗게 만듭니다 */
+    object-fit: cover; /* 이미지의 비율을 유지하면서 컨테이너에 맞춥니다 */
+    margin-left: 10px;
+        margin-right: 10px;
+    position: relative; /* 팝업 위치를 위한 상대적 위치 설정 */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: block; /* 이미지를 블록 요소로 만들어 중앙 정렬 가능하게 함 */
+}
+.username {
+    display: block; /* 닉네임을 블록 요소로 만들어 중앙 정렬 가능하게 함 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    margin-top: 10px; /* 이미지와 닉네임 사이에 간격 추가 */
+      color: white;
+          background-color: rgba(0, 0, 0, 0.3); /* 배경색: 연한 검은색, 투명도 50% */
+      font-size: 16px;
+}
+
+.user-list.mootier {
+    list-style: none;
+    padding: 0;
+}
+
+.user-list.mootier li {
+    margin-bottom: 10px;
+}
+
+.popup {
+    display: none;
+    position: absolute;
+    border: 2px solid #ccc;
+       border-radius: 10px; /* 둥근 모서리 */
+            padding: 20px; /* 내부 여백 */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+            max-width: auto; /* 최대 너비 */
+            margin-bottom: 30px; /* 중앙 정렬 */
+            text-align: center; /* 가운데 정렬 */
+  background-color: rgba(255, 255, 255, 0.8); /* 배경색: 하얀색, 투명도 100% */
+    z-index: 1000;
+    width: 500px;
+       font-weight: bold;
+    height: auto;
+   
+    font-size: 14px;
+    color: black;
+}
+
+.popup span {
+    margin-bottom: 8px; /* 항목 간격 설정 */
+}
+
+.popup a {
+    margin-bottom: 8px;
+    color: #0073e6; /* 링크 색상 설정 */
+    text-decoration: none; /* 링크 밑줄 제거 */
+}
+
+.popup a:hover {
+    text-decoration: underline; /* 링크 호버 시 밑줄 추가 */
+}
+
+.user-container {
+    position: relative;
+    display: inline-block; /* 이미지와 팝업을 같은 컨테이너 내부에 배치하기 위해 사용 */
+}
+
+/* 이미지에 마우스 오버 시 팝업 표시 */
+.user-container:hover .popup {
+    display: block;
+}
+
+.backcontainer {
+  width: auto;
+	min-height: auto;
+  background: url("/bootstrap/img/tierback.png");
+  background-position: center center;
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.highlight {
+
+    font-size: 20px; /* 폰트 크기 */
+    font-weight: bold; /* 폰트 두께 */
+    color: white; /* 폰트 색상 */
+}

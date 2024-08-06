@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+    <head>
+        <link rel="stylesheet" th:href="@{bootstrap/css/bjsearch.css}">
+      <script th:inline="javascript">
+      const totalPageCount = /*[[${response.pagination != null ? response.pagination.totalPageCount : 0}]]*/ 0;
+      const startPage = /*[[${response.pagination != null ? response.pagination.startPage : 1}]]*/ 1;
+      const endPage = /*[[${response.pagination != null ? response.pagination.endPage : 1}]]*/ 1;
+      const pageSize = 10;
+    </script>
+         <script src="/js/searchbj.js?ver=222222"defer></script>
+<title th:text="${bjdto.BJName} != null ? ${bjdto.BJName} + ' 전적 검색' : '기본 제목'">기본 제목</title>
+
+
+    </head>
+    <body>
+        <div layout:fragment="content">
+        <div class="backgroundsearch">
+            <div class="container-moo">
+                <!-- 상단 프로필 섹션 -->
+       <div class="profile-section-moo">
+				    <img th:src="${bjdto.imgUrl}" alt="프로필 사진" class="profile-photo-moo">
+				    <div>
+				        <span class="profile-name-moo" id = "playerName" th:text="${bjdto.BJName}"></span>     <a  target='_blank' th:href="'https://bj.afreecatv.com/' + ${bjdto.BJID}"> <img th:src="@{bootstrap/img/afreecatv.png}" alt="프로필 사진" width="30px" height="30px" style="margin-top: -12px;"></a><br>
+				      <a  target='_blank' th:href="'https://fow.kr/find/' + ${bjdto.LOLNickName1} + '-' + ${bjdto.LOLNickName2}" th:text="${bjdto.LOLNickName}"></a>
+				    </div>
+				</div>
+
+                
+                <!-- 3개의 div 섹션 -->
+                <div class="stats-section-moo">
+                    <div class="stat-box-moo2">
+                        <span class="profile-name-moo">솔로 랭크</span><br>
+                    <img th:src="@{${bjdto.tiersrc}}" alt="티어표" class="tier-image"> <br>
+         
+				    <span th:text="'14-2S 랭크 : ' + ${bjdto.LOLTier} + ' ' + ${bjdto.LOLrank} + ' / '"></span>
+				    <span th:text="'14-1S 랭크 : ' + ${bjdto.LOLBTier}"></span><br>
+				    <span th:text="'주 포지션 : ' + ${bjdto.LOLMPosition} + '  / ' " ></span>
+				    <span th:text="'부 포지션 : ' + ${bjdto.LOLSPosition}"></span><br>
+				               <span th:text="'랜드 CK 전적: ' + ${bjgamedto.games} + '전' "></span>
+				    <span th:text=" ${bjgamedto.win} +'승 ' "></span>
+				    <span th:text=" ${bjgamedto.lose} + '패 '"></span>
+				    <span th:text="'(' + ${bjgamedto.rate} + '%)'"></span><br></div>
+                    <div class="stat-box-moo">
+    <div class="bj-search-input-button-wrapper-moo">
+        <input type="text" id="bj-search-input-moo" autocomplete="off" placeholder="상대전적 검색..." />
+ 
+        <button id="bj-search-button-moo">검색</button>
+    </div>
+    <div id="bj-suggestions-moo" class="bj-suggestions-container-moo"></div>
+    <div class="bj-search-container-moo">
+    <div>
+    <span id = "blance" style="font-size: 22px; font-weight: bold;">밸런스</span><br><span style="font-size: 12px; color: gray;">*10판 이상 승률 40%~60% 사이</span>
+         <ul class="item-list" id="vs-list">
+        <li th:each="vs : ${vslist}" th:if="${vs.vsName != null}">
+        <div class="divvs">
+<span th:text="'vs ' + ${vs.vsName} + ':  ' + ${vs.games} + '전 ' + ${vs.win} + '승 ' + ${vs.lose} + '패 ' + '(' + ${vs.rate} + '%' + ')' " ></span>
+</div>
+</li>
+    </ul>
+                   </div>
+    </div>
+</div>
+                </div>
+                
+                <!-- 중간 선 -->
+                <hr class="divider-moo">
+                
+                <!-- 경기 결과 섹션 -->
+                <div class="match-results-moo"  th:each="game : ${response.list}">
+                     <div id="list">
+
+                    </div>
+                    <!-- 여기에 경기 결과를 10개씩 표시 -->
+                     <div class="match-result-moo" th:if = "${game.wins} == '승리'" style=" background:rgba(0,80,255,0.2);    border-left: 10px solid rgba(0, 0, 255, 0.7); /* 왼쪽 빨간색 줄 */
+  border-right: 10px solid  rgba(0, 0, 255, 0.7); /* 오른쪽 빨간색 줄 */">   
+<div class="left-box" >
+  <span style="font-size: 30px; color: rgba(0,70,255,1.0); display: block; margin-bottom: -40px;      ">승리</span><br>
+  <div class="score-container">
+    <div class="score-row">
+      <span th:if="${game.lscore > game.rscore}" class="blue team-name" th:text="'  ' + ${game.ltn}" style="display: inline; font-size: 18px;"></span>
+      <span th:if="${game.lscore < game.rscore}" class="red team-name" th:text="'  ' + ${game.ltn}" style="display: inline; font-size: 18px;"></span>
+      <div class="score">
+        <span th:text="' ' + ${game.lscore}" style="font-size: 18px;"></span>
+        <span th:text="' : '" style="font-size: 16px;"></span>
+        <span th:text="' ' + ${game.rscore}" style="font-size: 18px;"></span>
+      </div>
+      <span th:if="${game.rscore > game.lscore}" class="blue team-name" th:text="'  ' + ${game.rtn}" style="display: inline; font-size: 18px;"></span>
+      <span th:if="${game.rscore < game.lscore}" class="red team-name" th:text="'  ' + ${game.rtn}" style="display: inline; font-size: 18px;"></span>
+    </div>
+  </div>
+  <span th:text="'경기 날짜: ' + ${#strings.setSplit(game.gamedate, ' ')[0]} + ' ' +${#strings.setSplit(game.gamedate, ' ')[1]}"></span>
+  <span th:if="${game.timeAgo != null}" th:text="${game.timeAgo}"></span>
+</div>
+
+
+        <div class="right-box">
+        
+        	         	       <div class="left-inner-box">      
+          <a target="_blank" th:href="@{/bjsearch(search=${game.lp1})}">
+        <span th:text="${game.lp1}"></span>
+    </a>
+        <img th:if="${game.lp1bjid != null}" th:src=" '/bjimg/' +${game.lp1bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+        <img th:unless="${game.lp1bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2"><br>
+     <a target="_blank" th:href="@{/bjsearch(search=${game.lp2})}">
+        <span th:text="${game.lp2}"></span>
+        </a>
+        <img th:if="${game.lp2bjid != null}" th:src=" '/bjimg/' +${game.lp2bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+        <img th:unless="${game.lp2bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2"><br>
+   <a target="_blank" th:href="@{/bjsearch(search=${game.lp3})}">
+        <span th:text="${game.lp3}"></span>
+        </a>
+        <img th:if="${game.lp3bjid != null}" th:src=" '/bjimg/' +${game.lp3bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+        <img th:unless="${game.lp3bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2"><br>
+   <a target="_blank" th:href="@{/bjsearch(search=${game.lp4})}">
+        <span th:text="${game.lp4}"></span>
+        </a>
+        <img th:if="${game.lp4bjid != null}" th:src=" '/bjimg/' +${game.lp4bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+        <img th:unless="${game.lp4bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2"><br>
+   <a target="_blank" th:href="@{/bjsearch(search=${game.lp5})}">
+        <span th:text="${game.lp5}"></span>
+        </a>
+        <img th:if="${game.lp5bjid != null}" th:src=" '/bjimg/' +${game.lp5bjid}+ '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+        <img th:unless="${game.lp5bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2">
+</div>
+				<div class="vsfont" style="text-align: center;">VS
+				</div>
+            <div class="right-inner-box">
+    
+<img th:if="${game.rp1bjid != null}" th:src=" '/bjimg/' + ${game.rp1bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+<img th:unless="${game.rp1bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2">
+   <a target="_blank" th:href="@{/bjsearch(search=${game.rp1})}">
+        <span th:text="${game.rp1}"></span>
+        </a><br>
+
+<img th:if="${game.rp2bjid != null}" th:src=" '/bjimg/' + ${game.rp2bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+<img th:unless="${game.rp2bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2">
+   <a target="_blank" th:href="@{/bjsearch(search=${game.rp2})}">
+        <span th:text="${game.rp2}"></span>
+        </a><br>
+<img th:if="${game.rp3bjid != null}" th:src=" '/bjimg/' + ${game.rp3bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+<img th:unless="${game.rp3bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2">
+   <a target="_blank" th:href="@{/bjsearch(search=${game.rp3})}">
+        <span th:text="${game.rp3}"></span>
+        </a><br>
+
+<img th:if="${game.rp4bjid != null}" th:src=" '/bjimg/' + ${game.rp4bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+<img th:unless="${game.rp4bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2">
+   <a target="_blank" th:href="@{/bjsearch(search=${game.rp4})}">
+        <span th:text="${game.rp4}"></span>
+        </a><br>
+
+<img th:if="${game.rp5bjid != null}" th:src=" '/bjimg/' + ${game.rp5bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+<img th:unless="${game.rp5bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2">
+   <a target="_blank" th:href="@{/bjsearch(search=${game.rp5})}">
+<span th:text="${game.rp5}"></span>
+</a>
+
+        		</div>
+        		</div>
+        		</div>
+        		                 <div class="match-result-moo" th:if = "${game.wins} == '패배'" style=" background:  rgba(255,0,0,0.2);     border-left: 10px solid rgba(255, 0, 0, 0.7); /* 왼쪽 빨간색 줄 */
+  border-right: 10px solid  rgba(255, 0, 0, 0.7); /* 오른쪽 빨간색 줄 */">   
+                                  <div class="left-box">
+                    <span style="font-size: 30px; color: rgba(255,0,0,0.8); display: block; margin-bottom: -15px;          " >패배</span>
+           <div class="score-container">
+    <div class="score-row" >
+        <span th:if="${game.lscore > game.rscore}" class="blue team-name" th:text="'  ' + ${game.ltn}" style="display: inline;  font-size: 18px;"></span>
+        <span th:if="${game.lscore < game.rscore}" class="red team-name" th:text="'  ' + ${game.ltn}"style="display: inline;  font-size: 18px;"></span>
+              <div class="score">
+                <span th:text="' ' + ${game.lscore}"style="       font-size: 18px;"></span>
+        <span th:text="' : '"style="       font-size: 16px;"></span>
+               <span th:text="' ' + ${game.rscore}" style="       font-size: 18px;"></span>
+                     </div>
+        <span th:if="${game.rscore > game.lscore}" class="blue team-name" th:text="${game.rtn} + '  '"style="display: inline;  font-size: 18px;"></span>
+        <span th:if="${game.rscore < game.lscore}" class="red team-name" th:text="${game.rtn} + '  '"style="display: inline;  font-size: 18px;"></span>
+        </div>
+        </div>
+        <span th:text="'경기 날짜: ' + ${#strings.setSplit(game.gamedate, ' ')[0]} + ' ' +${#strings.setSplit(game.gamedate, ' ')[1]}"></span>
+                   <span th:if="${game.timeAgo != null}" th:text="${game.timeAgo}"></span>
+
+            
+                  	</div>
+           <div class="right-box">
+        
+        	         	       <div class="left-inner-box">      
+          <a target="_blank" th:href="@{/bjsearch(search=${game.lp1})}">
+        <span th:text="${game.lp1}"></span>
+    </a>
+       <img th:if="${game.lp1bjid != null}" th:src=" '/bjimg/' +${game.lp1bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+        <img th:unless="${game.lp1bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2"><br>
+     <a target="_blank" th:href="@{/bjsearch(search=${game.lp2})}">
+        <span th:text="${game.lp2}"></span>
+        </a>
+        <img th:if="${game.lp2bjid != null}" th:src=" '/bjimg/' +${game.lp2bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+        <img th:unless="${game.lp2bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2"><br>
+   <a target="_blank" th:href="@{/bjsearch(search=${game.lp3})}">
+        <span th:text="${game.lp3}"></span>
+        </a>
+        <img th:if="${game.lp3bjid != null}" th:src=" '/bjimg/' +${game.lp3bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+        <img th:unless="${game.lp3bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2"><br>
+   <a target="_blank" th:href="@{/bjsearch(search=${game.lp4})}">
+        <span th:text="${game.lp4}"></span>
+        </a>
+        <img th:if="${game.lp4bjid != null}" th:src=" '/bjimg/' +${game.lp4bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+        <img th:unless="${game.lp4bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2"><br>
+   <a target="_blank" th:href="@{/bjsearch(search=${game.lp5})}">
+        <span th:text="${game.lp5}"></span>
+        </a>
+        <img th:if="${game.lp5bjid != null}" th:src=" '/bjimg/' +${game.lp5bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+        <img th:unless="${game.lp5bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2">
+</div>
+				<div class="vsfont" style="text-align: center;">VS
+				</div>
+            <div class="right-inner-box">
+    
+<img th:if="${game.rp1bjid != null}" th:src=" '/bjimg/' + ${game.rp1bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+<img th:unless="${game.rp1bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2">
+   <a target="_blank" th:href="@{/bjsearch(search=${game.rp1})}">
+        <span th:text="${game.rp1}"></span>
+        </a><br>
+
+<img th:if="${game.rp2bjid != null}" th:src=" '/bjimg/' + ${game.rp2bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+<img th:unless="${game.rp2bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2">
+   <a target="_blank" th:href="@{/bjsearch(search=${game.rp2})}">
+        <span th:text="${game.rp2}"></span>
+        </a><br>
+<img th:if="${game.rp3bjid != null}" th:src=" '/bjimg/' + ${game.rp3bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+<img th:unless="${game.rp3bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2">
+   <a target="_blank" th:href="@{/bjsearch(search=${game.rp3})}">
+        <span th:text="${game.rp3}"></span>
+        </a><br>
+
+<img th:if="${game.rp4bjid != null}" th:src=" '/bjimg/' + ${game.rp4bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+<img th:unless="${game.rp4bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2">
+   <a target="_blank" th:href="@{/bjsearch(search=${game.rp4})}">
+        <span th:text="${game.rp4}"></span>
+        </a><br>
+
+<img th:if="${game.rp5bjid != null}" th:src=" '/bjimg/' + ${game.rp5bjid} + '.jpg'" alt="프로필 사진" class="profile-photo-moo2">
+<img th:unless="${game.rp5bjid != null}" th:src="@{bootstrap/img/defult.png}" alt="기본 프로필 사진" class="profile-photo-moo2">
+   <a target="_blank" th:href="@{/bjsearch(search=${game.rp5})}">
+<span th:text="${game.rp5}"></span>
+</a>
+
+        		</div>
+        		</div>
+                </div>
+            </div>             <div class="stats-section-moo2">
+            <div class="pagination" id="pagination"></div>
+            </div>
+
+            </div>
+        </div>
+ 
+        </div>
+        
+    </body>
+</html>

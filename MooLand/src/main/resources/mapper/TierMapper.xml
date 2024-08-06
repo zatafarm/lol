@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mooland.Tier.TierMapper">
+<select id="gettierlist" resultType="TierDTO">
+    SELECT *
+    FROM bj
+    WHERE LOLMPosition = #{position}
+    ORDER BY
+        CASE
+            WHEN LOLTier = 'CHALLENGER' THEN 1
+            WHEN LOLTier = 'GRANDMASTER' THEN 2
+            WHEN LOLTier = 'MASTER' THEN 3
+            ELSE 4
+        END
+</select>
+
+
+<select id = "gettierslist" resultType="TierDTO">
+    SELECT *
+    FROM bj
+    WHERE LOLSPosition = #{position}
+    ORDER BY
+        CASE
+            WHEN LOLTier = 'CHALLENGER' THEN 1
+            WHEN LOLTier = 'GRANDMASTER' THEN 2
+            WHEN LOLTier = 'MASTER' THEN 3
+            ELSE 4
+        END
+</select>
+<select id = "getalltierlist" resultType="TierDTO">
+    SELECT *
+    FROM bj
+    ORDER BY
+        CASE
+            WHEN LOLTier = 'CHALLENGER' THEN 1
+            WHEN LOLTier = 'GRANDMASTER' THEN 2
+            WHEN LOLTier = 'MASTER' THEN 3
+            ELSE 4
+        END
+</select>
+<select id = "getone" resultType="String">
+SELECT BJID
+FROM bj
+    WHERE BJName LIKE CONCAT('%', #{player}, '%')
+</select>
+
+<select id="getonec" resultType="integer">
+    SELECT count(*)
+    FROM bj
+    WHERE BJName LIKE CONCAT('%', #{player}, '%')
+</select>
+
+<select id="getdto" resultType="TierDTO">
+    SELECT *
+    FROM bj
+    WHERE BJName LIKE CONCAT('%', #{valu}, '%')
+</select>
+
+</mapper>

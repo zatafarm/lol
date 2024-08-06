@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mooland.entry.gameMapper">
+<insert id="createGame" parameterType="gameDTO" useGeneratedKeys="true" keyProperty="gameid" keyColumn="gameid">
+    INSERT INTO game (`createid`, `gamedate`, `mlt`, `ltn`, `rtn`)
+    VALUES (#{createid}, now(), #{mlt}, #{ltn}, #{rtn})
+</insert>
+<select id="getdata" resultType="gameDTO">
+select * from game where createid = #{id}  ORDER BY gameid DESC limit 1;
+</select>
+<select id="teamdata" resultType="gameDTO2">
+select * from gamesave where gameid = #{gameid} and team = #{team};
+</select>
+<insert id="setgame">
+    INSERT INTO gamewl (`gameid`, `bjname`, `lane`, `RB`, `setwin`)
+    VALUES (#{gameid}, #{bjname}, #{lane}, #{RB}, #{setwin})
+</insert>
+<insert id="savegame">
+INSERT INTO gamesave (`gameid`, `p1`, `p2`, `p3`, `p4`, `p5`, `team`) 
+ VALUES (#{gameid},#{p1},#{p2},#{p3},#{p4},#{p5},#{team});
+</insert>
+        <update id="finalgame">
+        UPDATE game
+        SET 
+            win = #{win},
+            fin = #{fin},
+            ltn = #{ltn},
+            rtn = #{rtn},
+            lscore = #{lscore}, 
+            rscore = #{rscore}
+        WHERE gameid = #{gameid}
+    </update> 
+          <update id="set2game">
+        UPDATE game
+        SET 
+            ltn = #{ltn},
+            rtn = #{rtn},
+            lscore = #{lscore}, 
+            rscore = #{rscore}
+        WHERE gameid = #{gameid}
+    </update> 
+<select id = "getgameidlist" resultType="Integer">
+SELECT DISTINCT gw.gameid
+FROM gamewl gw
+JOIN game g ON gw.gameid = g.gameid
+WHERE gw.bjname = #{playerName} AND g.fin = 1
+ORDER BY gw.gameid DESC
+
+</select>
+<select id = "getvsidlist" resultType="Integer">
+SELECT gameid
+FROM (
+    SELECT gameid, lane
+    FROM gamewl
+    WHERE bjname = #{PlayerName}
+    INTERSECT
+    SELECT gameid, lane
+    FROM gamewl
+    WHERE bjname = #{VsName}
+) AS total
+ORDER BY gameid DESC;
+</select>
+<select id = "getgamewinlost" resultType="String">
+SELECT 
+    CASE 
+        WHEN win = 1 THEN ltn 
+        WHEN win = 2 THEN rtn 
+    END AS winning_team
+FROM game 
+WHERE (ltn = #{team} OR rtn = #{team}) 
+  AND gameid = #{gameid};
+</select>
+<select id = "getteamname" resultType="String">
+SELECT team 
+FROM gamesave 
+WHERE gameid = #{gameid} AND (#{bjname} IN (p1, p2, p3, p4, p5));
+</select>
+
+<select id = "getplayerwl" resultType="map">
+WITH PlayerGames AS (
+    SELECT DISTINCT gw.gameid
+    FROM gamewl gw
+    JOIN game g ON gw.gameid = g.gameid
+    WHERE gw.bjname = #{playerName} AND g.fin = 1
+),
+TeamCheck AS (
+    SELECT pg.gameid, gs.team
+    FROM PlayerGames pg
+    JOIN gamesave gs ON pg.gameid = gs.gameid
+    WHERE #{playerName} IN (gs.p1, gs.p2, gs.p3, gs.p4, gs.p5)
+)
+SELECT 
+    tc.gameid,
+    tc.team,
+    CASE 
+        WHEN g.win = 1 AND g.ltn = tc.team THEN 'win'
+        WHEN g.win = 2 AND g.rtn = tc.team THEN 'win'
+        ELSE 'lose'
+    END AS result
+FROM TeamCheck tc
+JOIN game g ON tc.gameid = g.gameid
+ORDER BY tc.gameid DESC
+limit 5;
+</select>
+
+<select id = "getplayerwlint" resultType="BjGameDto">
+WITH PlayerGames AS (
+    SELECT DISTINCT gw.gameid
+    FROM gamewl gw
+    JOIN game g ON gw.gameid = g.gameid
+    WHERE gw.bjname = #{plyerName} AND g.fin = 1
+),
+TeamCheck AS (
+    SELECT pg.gameid, gs.team
+    FROM PlayerGames pg
+    JOIN gamesave gs ON pg.gameid = gs.gameid
+    WHERE #{plyerName} IN (gs.p1, gs.p2, gs.p3, gs.p4, gs.p5)
+),
+GameResults AS (
+    SELECT 
+        CASE 
+            WHEN g.win = 1 AND g.ltn = tc.team THEN 'win'
+            WHEN g.win = 2 AND g.rtn = tc.team THEN 'win'
+            ELSE 'lose'
+        END AS result
+    FROM TeamCheck tc
+    JOIN game g ON tc.gameid = g.gameid
+)
+SELECT 
+    COUNT(*) AS games,
+    COUNT(CASE WHEN result = 'win' THEN 1 END) AS win,
+    COUNT(CASE WHEN result = 'lose' THEN 1 END) AS lose
+FROM GameResults;
+</select>
+<select id="getvswl" parameterType="map" resultType="map">
+WITH CommonGames AS (
+    SELECT g1.gameid
+    FROM gamewl g1
+    JOIN gamewl g2 ON g1.gameid = g2.gameid AND g1.lane = g2.lane
+    WHERE g1.bjname = #{playerName} AND g2.bjname = #{VsName}
+),
+TeamAssignments AS (
+    SELECT
+        g.gameid,
+        gs.team AS team_player,
+        (SELECT team FROM gamesave WHERE gameid = g.gameid AND #{VsName} IN (p1, p2, p3, p4, p5)) AS team_vs
+    FROM CommonGames g
+    JOIN gamesave gs ON g.gameid = gs.gameid
+    WHERE #{playerName} IN (gs.p1, gs.p2, gs.p3, gs.p4, gs.p5)
+        AND (SELECT team FROM gamesave WHERE gameid = g.gameid AND #{VsName} IN (p1, p2, p3, p4, p5)) IS NOT NULL
+),
+GameResults AS (
+    SELECT 
+        ga.gameid,
+        ga.team_player,
+        ga.team_vs,
+        CASE 
+            WHEN g.win = 1 THEN g.ltn 
+            WHEN g.win = 2 THEN g.rtn 
+        END AS winning_team
+    FROM TeamAssignments ga
+    JOIN game g ON ga.gameid = g.gameid
+)
+SELECT 
+    gr.gameid,
+    #{playerName} AS playerName,
+    #{VsName} AS VsName,
+    CASE
+        WHEN gr.team_player = gr.winning_team THEN 'win'
+        ELSE 'lose'
+    END AS playerResult,
+    CASE
+        WHEN gr.team_vs = gr.winning_team THEN 'win'
+        ELSE 'lose'
+    END AS vsResult
+FROM GameResults gr
+ORDER BY gr.gameid DESC
+limit 5;
+</select>
+
+<select id = "getvswlint" resultType="BjGameDto">
+WITH CommonGames AS (
+    SELECT g1.gameid
+    FROM gamewl g1
+    JOIN gamewl g2 ON g1.gameid = g2.gameid AND g1.lane = g2.lane
+    WHERE g1.bjname = #{playerName} AND g2.bjname = #{VsName}
+),
+LatestGames AS (
+    SELECT
+        gameid,
+        ROW_NUMBER() OVER (PARTITION BY g1.gameid ORDER BY g1.gameid DESC) as rn
+    FROM CommonGames g1
+),
+FilteredGames AS (
+    SELECT gameid
+    FROM LatestGames
+    WHERE rn = 1
+),
+TeamAssignments AS (
+    SELECT
+        g.gameid,
+        gs.team AS team_player,
+        (SELECT team FROM gamesave WHERE gameid = g.gameid AND #{VsName} IN (p1, p2, p3, p4, p5) LIMIT 1) AS team_vs
+    FROM FilteredGames g
+    JOIN gamesave gs ON g.gameid = gs.gameid
+    WHERE #{playerName} IN (gs.p1, gs.p2, gs.p3, gs.p4, gs.p5)
+        AND (SELECT team FROM gamesave WHERE gameid = g.gameid AND #{VsName} IN (p1, p2, p3, p4, p5)  LIMIT 1) IS NOT NULL
+),
+GameResults AS (
+    SELECT 
+        ga.gameid,
+        ga.team_player,
+        ga.team_vs,
+        CASE 
+            WHEN g.win = 1 THEN g.ltn 
+            WHEN g.win = 2 THEN g.rtn 
+        END AS winning_team
+    FROM TeamAssignments ga
+    JOIN game g ON ga.gameid = g.gameid
+     WHERE g.fin = 1
+)
+SELECT
+    COUNT(*) AS games,
+    SUM(CASE WHEN gr.team_player = gr.winning_team THEN 1 ELSE 0 END) AS win,
+    SUM(CASE WHEN gr.team_player != gr.winning_team THEN 1 ELSE 0 END) AS lose
+FROM GameResults gr
+
+</select>
+    <select id="getgameidvs5" resultType="gameDTO">
+    SELECT bjname, gameid, lane
+FROM (
+    SELECT bjname, gameid, lane,
+           ROW_NUMBER() OVER (PARTITION BY bjname ORDER BY gameid) as rn
+    FROM gamewl
+    WHERE (gameid, lane) IN (
+        SELECT gameid, lane
+        FROM gamewl
+        WHERE bjname = #{playerName}
+    ) AND bjname != #{playerName}
+) sub
+WHERE rn = 1
+order by gameid desc
+    </select>
+</mapper>

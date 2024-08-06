@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/admin.css}">
+</head>
+<body>
+    <div layout:fragment="content">
+    <div  class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>BJ아이디</th>
+                <th>BJ이름</th>
+                <th>BJ롤아이디</th>
+                <th>삭제</th>
+            </tr>
+        </thead>
+        <tbody>
+ <tbody>
+        <tr th:each="member : ${response.list}" id="row_${member.BJID}">
+            <td th:text="${member.BJID}"></td>
+            <td th:text="${member.BJName}"></td>
+            <td th:text="${member.LOLNickName}"></td>
+            <td>
+                <button class="button" onclick="getRowData(this)">삭제</button>
+            </td>
+        </tr>
+    </tbody>
+  
+        </tbody>
+    </table>
+                <div class="pagination" id="pagination"></div>
+         <script th:inline="javascript">
+      const totalPageCount = /*[[${response.pagination != null ? response.pagination.totalPageCount : 0}]]*/ 0;
+      const startPage = /*[[${response.pagination != null ? response.pagination.startPage : 1}]]*/ 1;
+      const endPage = /*[[${response.pagination != null ? response.pagination.endPage : 1}]]*/ 1;
+      const pageSize = 10;
+    </script>
+    <script>
+    function createPagination(totalPages, currentPage, startPage, endPage) {
+	      const paginationElement = document.getElementById('pagination');
+	      paginationElement.innerHTML = '';
+
+	      const createPageButton = (text, page, isActive = false, isNavigation = false) => {
+	          const a = document.createElement('a');
+	          a.textContent = text;
+	          if (isActive && !isNavigation) a.classList.add('active');
+	          a.addEventListener('click', (event) => {
+	              event.preventDefault();
+
+	              window.location.href = `/admin/bjlist?page=${page}`;
+	          });
+	          return a;
+	      };
+
+	      if (currentPage > 1) {
+	          paginationElement.appendChild(createPageButton('<<', 1, false, true));
+	          paginationElement.appendChild(createPageButton('<', currentPage - 1, false, true));
+	      } else {
+	          paginationElement.appendChild(createPageButton('<<', 1, true, true));
+	          paginationElement.appendChild(createPageButton('<', 1, true, true));
+	      }
+
+	      for (let i = startPage; i <= endPage; i++) {
+	          if (i > totalPages) break;
+	          paginationElement.appendChild(createPageButton(i, i, i === currentPage));
+	      }
+
+
+	      if (currentPage < totalPages) {
+	          paginationElement.appendChild(createPageButton('>', currentPage + 1, false, true));
+	          paginationElement.appendChild(createPageButton('>>', totalPages, false, true));
+	      } else {
+	          paginationElement.appendChild(createPageButton('>', totalPages, true, true));
+	          paginationElement.appendChild(createPageButton('>>', totalPages, true, true));
+	      }
+	  }
+
+
+	  function getCurrentPageFromURL() {
+	      const urlParams = new URLSearchParams(window.location.search);
+	      return parseInt(urlParams.get('page')) || 1;
+	  }
+
+	  document.addEventListener('DOMContentLoaded', () => {
+	      const currentPage = getCurrentPageFromURL();
+	      createPagination(totalPageCount, currentPage, startPage, endPage);
+	  });
+
+    function getRowData(button) {
+        const row = button.closest('tr'); 
+        const cells = row.getElementsByTagName('td'); 
+        const bjId = cells[0].innerText; 
+        const selectedRole = $(row).find('select').val(); 
+        
+
+        $.ajax({
+            url: '/admin/deletebj', 
+            type: 'POST', 
+            data: {
+                bjId: bjId, 
+            },
+            success: function(data) {
+            	
+                alert("삭제 완료");
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                alert("삭제 실패");
+            }
+        });
+    }
+</script>
+</div>
+    </div>
+</body>
+</html>

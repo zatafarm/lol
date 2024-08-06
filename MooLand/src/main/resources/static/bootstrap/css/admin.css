@@ -1,0 +1,65 @@
+
+        .table-container {
+        margin:auto;
+            width: 800px; /* 원하는 너비 설정 */
+            border: 1px solid #ddd; /* 테두리 추가 */
+            border-radius: 8px; /* 모서리 둥글게 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+            padding: 20px; /* 내부 여백 */
+            background-color: #fff; /* 배경색 */
+        }
+        table {
+            width: 100%; /* 테이블 너비를 100%로 설정 */
+            border-collapse: collapse; /* 테두리 겹치기 방지 */
+        }
+        th, td {
+            border: 1px solid #ddd; /* 셀 테두리 */
+            padding: 8px; /* 셀 내부 여백 */
+            text-align: left; /* 텍스트 왼쪽 정렬 */
+        }
+        th {
+            background-color: #f2f2f2; /* 헤더 배경색 */
+        }
+        .button {
+            padding: 5px 10px; /* 버튼 패딩 */
+            cursor: pointer; /* 커서 포인터로 변경 */
+        }
+        .table-container button {
+    width: auto;
+    padding: 10px;
+    background-color: gray;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+}
+ .pagination {
+            display: inline-block;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+            border: 1px solid #ddd;
+            margin: 0 4px;
+              cursor: pointer; /* 클릭 포인터 추가 */
+        }
+
+        .pagination a.active {
+            background-color: gray;
+            color: white;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+            
+        }
+        

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>공지사항</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/board2.css}">
+    <style>
+        .post-form {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            width: 1500px;
+            background: white;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+   
+        .submit-btn {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            margin-left: 1395px;
+        }
+          .post-content img {
+            max-width: 80%; /* 부모 요소의 너비를 넘지 않도록 설정 */
+            height: auto; /* 비율 유지 */
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="backgroundboard">
+        <form id="postForm" action="/boardregit" method="POST" onsubmit="return submitPost()">
+            <div class="post-form">
+                <label>제목</label>
+                <div contenteditable="true" id="postTitle" placeholder="게시글 제목을 입력하세요..." style="border: 1px solid #ccc;"></div>
+                <input type="hidden" name="title" id="hiddenTitle">
+
+                <label>내용</label>
+                <div contenteditable="true" id="postContent" placeholder="게시글 내용을 입력하세요..." style="border: 1px solid #ccc; height: 600px; overflow: auto;"></div>
+                <input type="hidden" name="content" id="hiddenContent">
+
+                <label>유튜브 링크</label>
+                <input type="text" id="youtubeLink" placeholder="유튜브 링크를 입력하세요" style="width: 300px;">
+                <button type="button" onclick="generateEmbedCode()">임베드 코드 생성</button>
+
+                <h3>생성된 임베드 코드:</h3>
+                <textarea id="embedCode" rows="4" cols="50" readonly></textarea>
+
+                <button type="submit" class="submit-btn">게시</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function submitPost() {
+            const title = document.getElementById('postTitle').innerText.trim();
+            let content = document.getElementById('postContent').innerHTML.trim(); // HTML 구조를 유지
+
+            // <div> 대신 <br>로 치환 (줄바꿈을 <br>로 바꿔줌)
+            content = content.replace(/<\/div>\s*<div>/g, '<br>'); // <div> 태그 사이의 내용을 <br>로 변환
+            content = content.replace(/<div>/g, ''); // 시작 <div> 태그 제거
+            content = content.replace(/<\/div>/g, ''); // 끝 </div> 태그 제거
+
+            // hidden input에 값 설정
+            document.getElementById('hiddenTitle').value = title;
+            document.getElementById('hiddenContent').value = content; // HTML 그대로 전송
+
+            return true; // 폼 제출 허용
+        }
+
+        function generateEmbedCode() {
+            const link = document.getElementById('youtubeLink').value;
+            const videoId = extractVideoId(link);
+            if (videoId) {
+                const embedCode = `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                document.getElementById('embedCode').value = embedCode;
+
+                // 생성된 임베드 코드를 게시글 내용에 추가
+                const postContent = document.getElementById('postContent');
+                postContent.innerHTML += embedCode + '<br>'; // 줄바꿈 추가
+            } else {
+                alert("유효한 유튜브 링크를 입력하세요.");
+            }
+        }
+
+     
+
+        function extractVideoId(url) {
+            const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const matches = url.match(regex);
+            return matches ? matches[1] : null;
+        }
+    </script>
+</div>
+
+</body>
+</html>

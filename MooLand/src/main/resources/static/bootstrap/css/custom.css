@@ -1,0 +1,91 @@
+
+.auth-input {
+    width: 120px;
+    height: 25px;
+    font-size: 12px;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+     .error {
+            color: red;
+            
+        }
+.auth-button {
+    width: 70px;
+    height: 25px;
+    font-size: 12px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: 	#808080;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.auth-button:hover {
+    background-color: #0056b3;
+}
+.fixed-login {
+    position: fixed; /* 화면에 고정 */
+    top: 20px; /* 상단에서 20px 떨어짐 */
+    right: 10px; /* 우측에서 10px 떨어짐 */
+    z-index: 1000; /* 다른 요소 위에 표시되도록 */
+    background: white; /* 배경색 설정 */
+    padding: 10px; /* 패딩 설정 */
+    border: 1px solid #ccc; /* 경계선 설정 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    transition: display 0.3s ease; /* 부드러운 전환 효과 */
+}
+
+
+    /* CSS for dropdown menu */
+    .moo-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .moo-dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      right: 0; /* 오른쪽 정렬 */
+      text-align: center;
+    }
+
+    .moo-dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .moo-dropdown-content a:hover {
+      background-color: #ddd;
+    }
+
+    .moo-dropdown:hover .moo-dropdown-content {
+      display: block;
+    }
+    
+    
+.moo__right {
+	text-align: right;
+	padding: 30px 0 27px;
+}
+
+.moo__right__auth {
+	display: inline-block;
+	margin-right: 25px;
+}
+
+.moo__right__auth a {
+	font-size: 12px;
+	color: #666666;
+	position: relative;
+}
+    
