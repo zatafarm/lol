@@ -27,5 +27,5 @@ RIOT API의 커스텀 전적 정보 API가 중단되면서, 선수들의 경기 
 
 
 사이트 도메인
-
+AWS LIGHTSAIL , RDS 서버를 이용한 홈페이지 
 [MooLand](https://mooland.xyz)
